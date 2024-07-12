@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,6 +42,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'rest_framework.authtoken',
+    'django_filters',
 
     'posts',
 ]
@@ -52,7 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
+    ]
 
 ROOT_URLCONF = 'social_network.urls'
 
@@ -77,13 +80,16 @@ WSGI_APPLICATION = 'social_network.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+load_dotenv()
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dj_diplom',
-        'USER': 'adilet',
-        'PASSWORD': '1',
+        'NAME': os.getenv('NAME'),
+        'USER': os.getenv('LOGIN'),
+        'PASSWORD': os.getenv('PASSWORD'),
+        'HOST': 'localhost',
+        'PORT': 5432
     }
 }
 
@@ -123,7 +129,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_ROOT = os.path.join(BASE_DIR, 'static')
+
 # настройте STATIC_ROOT, MEDIA_URL и MEDIA_ROOT
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
